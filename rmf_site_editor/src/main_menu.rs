@@ -203,12 +203,12 @@ fn site_file_load_complete(
 ) {
     for (entity, mut task) in tasks.iter_mut() {
         if let Some(result) = future::block_on(future::poll_once(&mut task.0)) {
-            println!("Site map loaded");
+            info!("Site map loaded");
             commands.entity(entity).despawn();
 
             match result {
                 Some(result) => {
-                    println!("Entering traffic editor");
+                    info!("Entering traffic editor");
                     match app_state.set(AppState::SiteEditor) {
                         Ok(_) => {
                             let LoadSiteFileResult(file, site) = result;

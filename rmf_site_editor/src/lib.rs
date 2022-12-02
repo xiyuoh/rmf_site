@@ -1,7 +1,5 @@
 use bevy::{pbr::DirectionalLightShadowMap, prelude::*, render::render_resource::WgpuAdapterInfo};
 use bevy_egui::EguiPlugin;
-use bevy_log::LogSettings;
-use bevy_utils::tracing::Level;
 use main_menu::MainMenuPlugin;
 // use warehouse_generator::WarehouseGeneratorPlugin;
 #[cfg(not(target_arch = "wasm32"))]
@@ -137,11 +135,6 @@ pub fn run(command_line_args: Vec<String>) {
     app.init_resource::<Settings>()
         .add_startup_system(init_settings)
         .insert_resource(DirectionalLightShadowMap { size: 2048 })
-        // Only for Bevy 0.8.x, 0.9.x has a different API
-        .insert_resource(LogSettings {
-            level: Level::INFO,
-            filter: "warn,librmf_site_editor=info".to_string(),
-        })
         .add_plugins_with(DefaultPlugins, |group| {
             group.add_before::<bevy::asset::AssetPlugin, _>(SiteAssetIoPlugin)
         })

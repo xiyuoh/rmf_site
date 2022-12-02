@@ -30,6 +30,8 @@ dirs = "4.0"
 thread_local = "*"
 lyon = "1"
 thiserror = "*"
+tracing = "0.1"
+tracing-subscriber = "0.3"
 rmf_site_format = { path = "../rmf_site_format", features = ["bevy"] }
 itertools = "*"
 

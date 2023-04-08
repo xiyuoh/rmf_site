@@ -1,5 +1,6 @@
 use bevy::{pbr::DirectionalLightShadowMap, prelude::*, render::renderer::RenderAdapterInfo};
 use bevy_egui::EguiPlugin;
+// use bevy_log::{LogPlugin, LogSettings};
 use main_menu::MainMenuPlugin;
 // use warehouse_generator::WarehouseGeneratorPlugin;
 #[cfg(not(target_arch = "wasm32"))]

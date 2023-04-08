@@ -17,15 +17,18 @@
 
 use bevy::prelude::*;
 use bevy_egui::{egui, EguiContext};
-use tracing::{event, info, instrument, span, Level};
-use tracing_subscriber;
+// use bevy_log::LogSettings;
+
+// A unit struct to help identify the FPS UI component, since there may be many Text components
+#[derive(Component)]
+struct ColorText;
 
 pub struct LoggingConsolePlugin;
 
 impl Plugin for LoggingConsolePlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system(setup)
-        .add_system(console_ui);
+        app.add_system(console_ui)
+        .add_system(update_text);
         // .add_system_set(
         //     SystemSet::on_update(AppState::________)
         //         .with_system()
@@ -38,40 +41,10 @@ impl Plugin for LoggingConsolePlugin {
     }
 }
 
-fn setup(
-    //
-) {
-    // tracing_subscriber::fmt::init();
-
-    // let collector = tracing_subscriber::fmt()
-    //     .with_max_level(Level::TRACE)
-    //     .finish();
-
-    // let number_of_yaks = 3;
-
-    // tracing::collect::with_default(collector, || {
-    //     info!("this will be logged???");
-    // });
-    // info!(number_of_yaks, "preparing to shave yaks");
-
-    // info!("yak shaving completed.");
-    println!("------------------------------------- YOYOYOYOYO")
-}
-
 fn console_ui(
-    // arguments go here
+    time: Res<Time>,
     mut egui_context: ResMut<EguiContext>,
 ) {
-    event!(Level::INFO, "something happened");
-
-    let span = span!(Level::TRACE, "my_span");
-    let _guard = span.enter();
-
-
-    event!(Level::INFO, printout = "testing");
-    event!(Level::INFO, "something happened inside my span");
-
-
     // some logic goes here
 
     egui::TopBottomPanel::bottom("log_console")
@@ -80,39 +53,26 @@ fn console_ui(
             ui.heading("RMF Site Editor Console");
             ui.add_space(10.);
             
-            ui.label("hello there");
-            ui.label("yoyo wassup");
+            ui.add(egui::Label::new("hello there"));
+            ui.add(egui::Label::new("yo yo yo"));
         });
 }
 
-fn log_generator(
-    mut commands: Commands,
-    mut spawner: Spawner,
-    asset_server: Res<AssetServer>,
+fn update_text(
+    time: Res<Time>,
+    mut query: Query<&mut Text, With<ColorText>>,
 ) {
-    // commands.spawn();
+    for mut text in &mut query {
+        let seconds = time.delta_seconds();
+
+        // Update the color of the first and only section.
+        text.sections[0].style.color = Color::Rgba
+        {
+            red: (1.25 * seconds).sin() / 2.0 + 0.5,
+            green: (0.75 * seconds).sin() / 2.0 + 0.5,
+            blue: (0.50 * seconds).sin() / 2.0 + 0.5,
+            alpha: 1.0,
+        };
+    }
+
 }
-
-// #[instrument]
-// pub fn my_function(
-//     my_arg: usize
-// ) {
-//     event!(Level::INFO, "inside my_function!");
-// }
-
-// fn update_text(
-//     diagnostics: Res<Diagnostics>,
-//     mut query: Query<&mut Text, With<FpsText>>,
-// ) {
-//     for mut text in &mut query {
-//         if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS)
-//         {
-//             if let Some(value) = fps.smoothed()
-//             {
-//                 // Update the value of the second section
-//                 text.sections[1].value = format!("{value:.2}");
-//             }
-//         }
-//     }
-
-// }

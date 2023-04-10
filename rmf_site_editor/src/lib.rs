@@ -18,8 +18,8 @@ mod animate;
 
 mod keyboard;
 use keyboard::*;
-mod console;
-use console::LoggingConsolePlugin;
+// mod console;
+// use console::LoggingConsolePlugin;
 mod settings;
 use settings::*;
 
@@ -155,7 +155,7 @@ pub fn run(command_line_args: Vec<String>) {
         .add_plugin(AabbUpdatePlugin)
         .add_plugin(EguiPlugin)
         .add_plugin(KeyboardInputPlugin)
-        .add_plugin(LoggingConsolePlugin)
+        // .add_plugin(LoggingConsolePlugin)
         .add_state(AppState::MainMenu)
         .add_plugin(MainMenuPlugin)
         // .add_plugin(WarehouseGeneratorPlugin)
